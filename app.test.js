@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 
-const url = 'http://localhost:3000';
+const url = 'http://localhost';
 
 let zugangscode;
 

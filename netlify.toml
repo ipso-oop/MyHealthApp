@@ -1,10 +1,9 @@
-[build]
-  functions = "netlify/functions"
 [functions]
-  external_node_modules = ["express"]
+  external_node_modules = ["express", "cookie-parser", "body-parser", "bcrypt", "nodemailer", "sqlite3"]
   node_bundler = "esbuild"
+
 [[redirects]]
-  force = true
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
   status = 200
-  from = "/*"
-  to = "/.netlify/functions/index"
+  force = true
