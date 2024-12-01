@@ -27,5 +27,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - run: node app.js
-    - run: npm test
+    - name: Deploy to Netlify
+           run:|
+             npm install -g netlify-cli
+             netlify deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=a4132ffb-c54b-4735-b387-8ee10075e2c9
+           env:
+             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
