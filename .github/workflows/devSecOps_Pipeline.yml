@@ -28,7 +28,7 @@ jobs:
     - run: npm install
 
  
-  snyk-security-scan:
+   snyk-security-scan:
     needs: build
     runs-on: ubuntu-latest
     continue-on-error: true
@@ -48,15 +48,14 @@ jobs:
 
       - name: Run Snyk to check for vulnerabilities
         run: snyk test
-
-
-  zap-basic-scan:
-   needs: build
-   runs-on: ubuntu-latest
+        
+   zap-basic-scan:
+    needs: build
+    runs-on: ubuntu-latest
    
-   steps:
+    steps:
       - name: ZAP Scan
         uses: zaproxy/action-baseline@v0.13.0
         with:
-          target: 'https://main--earnest-wisp-ae867d.netlify.app//'
+          target: 'https://main--earnest-wisp-ae867d.netlify.app/'
 
