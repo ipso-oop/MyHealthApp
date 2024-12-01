@@ -226,6 +226,6 @@ function sendAccessNotification(healthDataId) {
 }
 
 // Starten des Servers
-app.listen(3000,() => {
+app.listen(() => {
   console.log('Server läuft auf http://localhost:3000');
 });
