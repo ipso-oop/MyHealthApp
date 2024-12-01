@@ -1,5 +1,5 @@
 [functions]
-  external_node_modules = ["ejs","express", "cookie-parser", "body-parser", "bcrypt", "nodemailer", "sqlite3"]
+  external_node_modules = ["ejs","express", "cookie-parser", "body-parser", "bcrypt", "nodemailer", "sqlite3", "util"]
   node_bundler = "esbuild"
   included_files = ["views/**/*"]
 
