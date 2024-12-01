@@ -27,9 +27,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm install
-    - name: Deploy to Netlify
-           run:|
-             npm install -g netlify-cli
-             netlify deploy --prod --dir=build --auth=$NETLIFY_AUTH_TOKEN --site=a4132ffb-c54b-4735-b387-8ee10075e2c9
-           env:
-             NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+    - name: Netlify Deploy
+      # You may pin to the exact commit or the version.
+      # uses: jsmrcaga/action-netlify-deploy@0f0941d68f55a7268a8258b2a367190f17116a39
+      uses: jsmrcaga/action-netlify-deploy@v2.2.0
+      with:
+        # Auth token to use with netlify
+        NETLIFY_AUTH_TOKEN: $NETLIFY_AUTH_TOKEN 
+        # Your Netlify site id
+        NETLIFY_SITE_ID: a4132ffb-c54b-4735-b387-8ee10075e2c9
+          
