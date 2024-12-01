@@ -1,6 +1,7 @@
 [functions]
   external_node_modules = ["ejs","express", "cookie-parser", "body-parser", "bcrypt", "nodemailer", "sqlite3"]
   node_bundler = "esbuild"
+  included_files = ["views/**/*"]
 
 [[redirects]]
  from = "/*"
