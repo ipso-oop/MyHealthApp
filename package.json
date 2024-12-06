@@ -3,7 +3,7 @@
     "@netlify/functions": "^2.8.2",
     "@types/express": "^5.0.0",
     "ejs": "^3.1.10",
-    "express": "^4.21.1",
+    "express": "^4.21.2",
     "nodemailer": "^6.9.16",
     "serverless-http": "^3.2.0",
     "util": "^0.12.5"
