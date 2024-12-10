@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const { promisify } = require('util');
 const app = express();
-const db = new sqlite3.Database('./HealthData.db');
+const db = new sqlite3.Database('./healthdata.db');
 
 // Middleware Setup
 app.use(bodyParser.urlencoded({ extended: true }));
