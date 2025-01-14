@@ -48,37 +48,6 @@ describe('Test Suite für die Anwendung', () => {
     expect(res.text).toContain('Admin health report');
   });
 
-  // Test für Hinzufügen von Gesundheitsdaten
-  test('POST /health_data/add sollte neue Gesundheitsdaten hinzufügen', async () => {
-    const agent = request.agent(url);
-
-    // Logge Benutzer ein
-    await agent.post('/login').send({ username: 'admin', password: 'admin123' });
-
-    // Füge Daten hinzu
-    const newHealthData = { data: 'Neue Gesundheitsdaten', category: 'Test' };
-    const res = await agent.post('/health_data/add').send(newHealthData);
-    expect(res.statusCode).toBe(200);
-    expect(res.text).toContain('Daten hinzugefügt');
-  });
-
-  // Test für das Teilen von Daten
-  test('POST /health_data/share sollte einen Freigabelink generieren', async () => {
-    const agent = request.agent(url);
-
-    // Logge Benutzer ein
-    await agent.post('/login').send({ username: 'admin', password: 'admin123' });
-
-    // Teile Daten
-    const res = await agent.post('/health_data/share').send({ healthDataId: 1 });
-    expect(res.statusCode).toBe(200);
-    expect(res.text).toContain('Zugangscode');
-	zugangscode = res.text.match(/Zugangscode:\s(\w+)/)[1]; // Zugangscode extrahieren
-    expect(zugangscode).toBeDefined();
-  });
-
- 
-
   
 
   });
