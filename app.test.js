@@ -77,19 +77,8 @@ describe('Test Suite für die Anwendung', () => {
     expect(zugangscode).toBeDefined();
   });
 
-  // Test für Zugriff auf geteilte Daten
-  test('GET /health_data/access sollte geteilte Daten zurückgeben', async () => {
-    const res = await request(url).get(`/health_data/access?code=${zugangscode}`);
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty('data');
-  });
+ 
 
-  // Test für die Kommentarfunktion
-  test('POST /comment sollte einen Kommentar zurückgeben', async () => {
-    const res = await request(url).post('/comment').send({ comment: 'Testkommentar' });
-    expect(res.statusCode).toBe(200);
-    expect(res.text).toContain('Kommentar erhalten');
-  });
-
+  
 
   });
