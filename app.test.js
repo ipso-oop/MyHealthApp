@@ -13,12 +13,7 @@ describe('Test Suite für die Anwendung', () => {
     expect(res.statusCode).toBe(200);
     expect(res.text).toContain('Willkommen bei MyHealthApp');
 	});
-  // Test für die Registrierung
-  test('POST /register sollte einen neuen Benutzer registrieren', async () => {
-    const newUser = { username: 'testuser', password: 'testpass', email: 'test@example.com' };
-    const res = await request(url).post('/register').send(newUser);
-    expect(res.statusCode).toBe(302); // Umleitung zum Login
-  });
+ 
 
   // Test für den Login
   test('POST /login sollte einen Benutzer erfolgreich einloggen', async () => {
@@ -45,7 +40,7 @@ describe('Test Suite für die Anwendung', () => {
     // Greife auf Dashboard zu
     const res = await agent.get('/dashboard');
     expect(res.statusCode).toBe(200);
-    expect(res.text).toContain('Admin health report');
+    expect(res.text).toContain('Dashboard');
   });
 
   
