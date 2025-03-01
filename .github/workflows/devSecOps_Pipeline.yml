@@ -78,7 +78,7 @@ jobs:
           config: "p/ci"  # Nutzt die offiziellen Sicherheitsregeln von Semgrep
 
       - name: Upload IAST Report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: iast-security-report
           path: semgrep-report.json
