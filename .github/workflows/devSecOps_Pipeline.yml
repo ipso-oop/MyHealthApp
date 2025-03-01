@@ -63,4 +63,23 @@ jobs:
         uses: zaproxy/action-baseline@v0.13.0
         with:
           target: 'https://myhealthapp-test.netlify.app/'
+          
+   iast-security-test:
+    needs: build_integration_test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Semgrep IAST Analysis
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: "p/ci"  # Nutzt die offiziellen Sicherheitsregeln von Semgrep
+
+      - name: Upload IAST Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: iast-security-report
+          path: semgrep-report.json
 
