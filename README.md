@@ -1,13 +1,30 @@
-Here is the updated README file including a link to the workflows:
-
 # MyHealthApp
 
-MyHealthApp is a web application designed to help users manage their health data efficiently.
+⚠️ **SECURITY WARNING: DO NOT DEPLOY TO PRODUCTION** ⚠️
+
+This application contains **CRITICAL SECURITY VULNERABILITIES** that must be addressed before any deployment.
+
+## 🔴 Critical Security Issues Identified
+
+- **SQL Injection** - Database can be compromised
+- **Authorization Bypass** - Users can access/modify other users' data  
+- **XSS Vulnerabilities** - Script injection possible
+- **Insecure Session Management** - Session hijacking possible
+- **Information Disclosure** - Sensitive data logged
+
+See `SECURITY_REVIEW.md` for complete details and `SECURITY_FIXES.md` for remediation.
 
 ## Features
-- **Login**: Secure user authentication.
-- **Registration**: User account creation.
-- **Health Data Management**: Manage and track various health metrics.
+- **Login**: User authentication (⚠️ VULNERABLE)
+- **Registration**: User account creation (⚠️ VULNERABLE)
+- **Health Data Management**: Manage and track health metrics (⚠️ VULNERABLE)
+
+## Security Testing
+
+🔒 **Run security tests to verify vulnerabilities:**
+```sh
+npm run test:security
+```
 
 ## Installation
 To set up the project locally, follow these steps:
