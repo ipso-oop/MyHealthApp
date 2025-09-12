@@ -54,7 +54,7 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
   console.log(req.body.username);
   console.log(req.body.password);
-  db.get(`SELECT * FROM users WHERE username = '${req.body.username}'`,(err, user) => {
+  db.get("SELECT * FROM users WHERE username = ?", [req.body.username], (err, user) => {
 	console.log(user);
 	if(user){
 	const match = bcrypt.compareSync(req.body.password, user.password);
@@ -83,35 +83,85 @@ app.get('/dashboard', (req, res) => {
 // Hinzufügen von Gesundheitsdaten
 app.post('/health_data/add', (req, res) => {
   const userId = req.cookies.user;
+  if (!userId) return res.status(401).send('Nicht authentifiziert');
+  
   const { data, category } = req.body;
+  
+  // Basic input validation
+  if (!data || !category) {
+    return res.status(400).send('Daten und Kategorie sind erforderlich');
+  }
+  
+  if (data.length > 1000 || category.length > 100) {
+    return res.status(400).send('Eingabe zu lang');
+  }
+  
   db.run("INSERT INTO health_data (user_id, data, category) VALUES (?, ?, ?)", [userId, data, category], (err) => {
-    if (err) return res.send('Fehler beim Hinzufügen der Daten');
+    if (err) return res.status(500).send('Fehler beim Hinzufügen der Daten');
     res.send('Daten hinzugefügt');
   });
 });
 
 // Bearbeiten von Gesundheitsdaten
 app.post('/health_data/edit', (req, res) => {
+  const userId = req.cookies.user;
+  if (!userId) return res.status(401).send('Nicht authentifiziert');
+  
   const { id, data, category } = req.body;
-  db.run("UPDATE health_data SET data = ?, category = ? WHERE id = ?", [data, category, id], (err) => {
-    if (err) return res.send('Fehler beim Bearbeiten der Daten');
-    res.send('Daten aktualisiert');
+  
+  // Basic input validation
+  if (!id || !data || !category) {
+    return res.status(400).send('ID, Daten und Kategorie sind erforderlich');
+  }
+  
+  if (data.length > 1000 || category.length > 100) {
+    return res.status(400).send('Eingabe zu lang');
+  }
+  
+  // First check if the health data belongs to the authenticated user
+  db.get("SELECT user_id FROM health_data WHERE id = ?", [id], (err, record) => {
+    if (err) return res.status(500).send('Datenbankfehler');
+    if (!record) return res.status(404).send('Gesundheitsdaten nicht gefunden');
+    if (record.user_id != userId) return res.status(403).send('Keine Berechtigung');
+    
+    // Now update the data
+    db.run("UPDATE health_data SET data = ?, category = ? WHERE id = ?", [data, category, id], (err) => {
+      if (err) return res.status(500).send('Fehler beim Bearbeiten der Daten');
+      res.send('Daten aktualisiert');
+    });
   });
 });
 
 // Löschen von Gesundheitsdaten
 app.post('/health_data/delete', (req, res) => {
+  const userId = req.cookies.user;
+  if (!userId) return res.status(401).send('Nicht authentifiziert');
+  
   const { id } = req.body;
-  db.run("DELETE FROM health_data WHERE id = ?", [id], (err) => {
-    if (err) return res.send('Fehler beim Löschen der Daten');
-    res.send('Daten gelöscht');
+  
+  // Basic input validation
+  if (!id) {
+    return res.status(400).send('ID ist erforderlich');
+  }
+  
+  // First check if the health data belongs to the authenticated user
+  db.get("SELECT user_id FROM health_data WHERE id = ?", [id], (err, record) => {
+    if (err) return res.status(500).send('Datenbankfehler');
+    if (!record) return res.status(404).send('Gesundheitsdaten nicht gefunden');
+    if (record.user_id != userId) return res.status(403).send('Keine Berechtigung');
+    
+    // Now delete the data
+    db.run("DELETE FROM health_data WHERE id = ?", [id], (err) => {
+      if (err) return res.status(500).send('Fehler beim Löschen der Daten');
+      res.send('Daten gelöscht');
+    });
   });
 });
 
 // Freigabe von Gesundheitsdaten
 app.post('/health_data/share', (req, res) => {
   const { healthDataId } = req.body;
-  const accessCode = Math.random().toString(36).substr(2, 8);
+  const accessCode = Math.random().toString(36).substring(2, 10);
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000); // 1 Stunde gültig
   
   db.run("INSERT INTO access_links (health_data_id, access_code, expires_at) VALUES (?, ?, ?)", [healthDataId, accessCode, expiresAt], (err) => {
