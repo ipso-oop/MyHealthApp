@@ -93,6 +93,7 @@ app.post('/health_data/add', (req, res) => {
 // Bearbeiten von Gesundheitsdaten
 app.post('/health_data/edit', (req, res) => {
   const { id, data, category } = req.body;
+  console.log(req.body);
   db.run("UPDATE health_data SET data = ?, category = ? WHERE id = ?", [data, category, id], (err) => {
     if (err) return res.send('Fehler beim Bearbeiten der Daten');
     res.send('Daten aktualisiert');
